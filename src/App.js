@@ -26,6 +26,9 @@ function App() {
 
       {supportAd}
       <br />
+
+      <div><b>Links:</b> <a href='https://www.cdc.gov/vaccines/covid-19/downloads/COVID-19-vacc-schedule-at-a-glance-508.pdf'>CDC Vaccination Schedule Diagram</a></div>
+      <br />
     </div>
   );
 }
