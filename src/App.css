@@ -224,3 +224,7 @@ th {
   width: 1in;
   font-size: 9pt;
 }
+
+.w200 {
+  width: 200px;
+}
