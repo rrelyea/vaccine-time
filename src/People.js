@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import vaccineSchedule from "./data/cdc-schedule.json";
 
 function People() {
     const [users, setUsers] = useState([
@@ -8,16 +9,22 @@ function People() {
         setUsers(state => [...state, newUser])
     }
 
-    
     function clearPeople() {
         setUsers([]);
     }
 
-    function addPerson() {
-        var personName = document.getElementById('personName');
+    function copySampleData() {
+        var sampleData = document.getElementById('sampleData');
+        var importData = document.getElementById('importData');
 
-        if (personName.value !== "") {
-            var lines = personName.value.split('\n');
+        importData.value = sampleData.value;
+    }
+
+    function addPerson() {
+        var importData = document.getElementById('importData');
+
+        if (importData.value !== "") {
+            var lines = importData.value.split('\n');
             
             var newPerson = null;
             for (var i = 0; i < lines.length; i++) {
@@ -35,7 +42,6 @@ function People() {
                             var ms = Date.parse(line);
                             var date = new Date(ms);
                             newPerson.birthDate = date;
-                            console.log(newPerson.birthDate);
                         } else if (line.toLowerCase() === "immunocompromised" || line.toLowerCase() === "ic") {
                             newPerson.immunocompromised = true;
                         } else {
@@ -43,10 +49,10 @@ function People() {
                             var dose = { "vaccine": chunks[0], "date": chunks[1] };
                             newPerson.doses.push(dose);
                         }
-
                     }
                 }
             }
+
             if (newPerson != null) {
                 addUserToEnd(newPerson);
                 newPerson = null;
@@ -71,27 +77,38 @@ function People() {
         }
     }
 
+    function matchesRange(age, range) {
+        var firstCompare = range[0];
+        var secondCompare = range[range.length - 1];
+        var ages = range.substring(1, range.length-1).split(',');
+        if (ages[1] === "") { ages[1] = Infinity; }
+        var firstAnswer = firstCompare === "[" ? age >= ages[0] : age > ages[0];
+        var secondAnswer = secondCompare === "]" ? age <= ages[1] : age < ages[1];
+
+        return firstAnswer && secondAnswer;
+    }
+
     function calculateDosesNeeded(user) {
         var age = calculateAge(user.birthDate);
         var immunocompromised = user.immunocompromised;
 
-        var dosesNeeded = 0;
-        if (age > .5 && age < 5) {
-            dosesNeeded = 3;
-        } else if (age >=5 && age < 12) {
-            dosesNeeded = 3;
-            if (immunocompromised) { dosesNeeded++; }
-        } else if (age >= 12 && age < 50) {
-            dosesNeeded = 3;
-            if (immunocompromised) { dosesNeeded = 5; }
-        } else if (age >= 50) {
-            dosesNeeded = 4;
-            if (immunocompromised) { dosesNeeded = 5; }
-        } else if (isNaN(age)) {
-            dosesNeeded = NaN;
+        var firstVaccineType = user.doses[0].vaccine;
+
+        for (var i = 0; i < vaccineSchedule.vaccineSchedules.length; i++) {
+            if (vaccineSchedule.vaccineSchedules[i].vaccine.toLowerCase().startsWith(firstVaccineType.toLowerCase())) {
+                for (var j = 0; j < vaccineSchedule.vaccineSchedules[i].schedules.length; j++) {
+                    var ageMatch = matchesRange(age, vaccineSchedule.vaccineSchedules[i].schedules[j].ages);
+                    var immunocompromisedSchedule = "immunocompromised" in vaccineSchedule.vaccineSchedules[i].schedules[j];
+                    if (ageMatch) {
+                        if (immunocompromisedSchedule === immunocompromised) {
+                            return vaccineSchedule.vaccineSchedules[i].schedules[j].doses.length;
+                        }
+                    }
+                }
+            }
         }
 
-        return dosesNeeded;
+        return "unknown";
     }
 
     function showDosesNeeded(user) {
@@ -118,6 +135,13 @@ function People() {
             return "";
         }
     }
+
+    function getSampleData() {
+        var sample = 'George Washington\n2/22/1732\nPfizer 2/1/2021\nPfizer 4/1/2021\n\nAbraham Lincoln\n2/12/1809\nImmunocompromised\nModerna 2/8/2021\nModerna 4/8/2021\n';
+        var lines = sample.split('\n');
+        return lines.join('\n');
+    }
+
     return (
         <>
             <div className="container">
@@ -154,25 +178,16 @@ function People() {
                 <div className='tal'><b>Type in data about 1 or more people using the pattern below, then press 'import':</b></div>
 
                 <br/>
-                <textarea className='w400 h400' id='personName' /><br/>
+                <textarea className='w400 h400' id='importData' /><br/>
                 <button onClick={addPerson}>import</button>
+                <button onClick={copySampleData}>copy sample data to box above</button>
                 <button onClick={clearPeople}>clear all people</button>
                 <br/>
                 <br/>
                 <div className='tal'><b>Example data format:</b></div>
                 
-                <div className='sampleData'>
-                    George Washington<br/>
-                    2/22/1732<br/>
-                    Pfizer 2/1/2021<br/>
-                    Pfizer 4/1/2021<br/>
-                    <br/>
-                    Abraham Lincoln<br/>
-                    2/12/1809<br/>
-                    Immunocompromised<br/>
-                    Moderna 2/8/2021<br/>
-                    Moderna 4/8/2021<br/>
-                </div>
+                <textarea className='sampleData w400 h400' id='sampleData' defaultValue={getSampleData()} >
+                </textarea>
             </div>
         </>
     );
