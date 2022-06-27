@@ -32,6 +32,7 @@ function People() {
                 if (line === "") {
                     if (newPerson != null) {
                         addUserToEnd(newPerson);
+                        findAppropriateSchedule(newPerson);
                         newPerson = null;
                     }
                 } else {
@@ -55,6 +56,7 @@ function People() {
 
             if (newPerson != null) {
                 addUserToEnd(newPerson);
+                findAppropriateSchedule(newPerson);
                 newPerson = null;
             }
         }
@@ -88,7 +90,7 @@ function People() {
         return firstAnswer && secondAnswer;
     }
 
-    function calculateDosesNeeded(user) {
+    function findAppropriateSchedule(user) {
         var age = calculateAge(user.birthDate);
         var immunocompromised = user.immunocompromised;
 
@@ -101,14 +103,20 @@ function People() {
                     var immunocompromisedSchedule = "immunocompromised" in vaccineSchedule.vaccineSchedules[i].schedules[j];
                     if (ageMatch) {
                         if (immunocompromisedSchedule === immunocompromised) {
-                            return vaccineSchedule.vaccineSchedules[i].schedules[j].doses.length;
+                            user.schedule = vaccineSchedule.vaccineSchedules[i].schedules[j];
                         }
                     }
                 }
             }
         }
+    }
 
-        return "unknown";
+    function calculateDosesNeeded(user) {
+        if ('schedule' in user) {
+            return user.schedule.doses.length;
+        } else {
+            return 'unknown';
+        }
     }
 
     function showDosesNeeded(user) {
@@ -133,6 +141,15 @@ function People() {
             return dosesToSchedule;
         } else {
             return "";
+        }
+    }
+
+    function showNextDoseTiming(user) {
+        if ('schedule' in user) {
+            var doseCount = user.doses.length;
+            var lastDoseDate = new Date(user.doses[doseCount - 1].date);
+            var interval = user.schedule.doses[doseCount].after;
+            return interval + " after " + lastDoseDate.toLocaleDateString('en-US');
         }
     }
 
@@ -168,6 +185,7 @@ function People() {
                                 </td>
                                 <td>{showDosesNeeded(user)}</td>
                                 <td>{showDosesToSchedule(user)}</td>
+                                <td>{showNextDoseTiming(user)}</td>
                             </tr>
                         )}
                     </tbody>
