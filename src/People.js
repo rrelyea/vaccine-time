@@ -173,17 +173,22 @@ function People() {
                     </tbody>
                 </table>
             </div>
+            { users.length > 0 ?
+            <button onClick={clearPeople}>clear all people</button> :
+            false }
+
             <div className='tal'>
                 <br/>
-                <div className='tal'><b>Type in data about 1 or more people using the pattern below, then press 'import':</b></div>
+                <button onClick={addPerson}>process</button>
+                <br/>
+                <div className='tal'><b>Enter data about 1 or more people using the pattern below in 'example data format', then press 'process'.</b></div>
 
                 <br/>
+                <div className='tal'><b>Data to process:</b></div>
                 <textarea className='w400 h400' id='importData' /><br/>
-                <button onClick={addPerson}>import</button>
-                <button onClick={copySampleData}>copy sample data to box above</button>
-                <button onClick={clearPeople}>clear all people</button>
                 <br/>
                 <br/>
+                <button onClick={copySampleData}>copy example data to "data to process" box</button>
                 <div className='tal'><b>Example data format:</b></div>
                 
                 <textarea className='sampleData w400 h400' id='sampleData' defaultValue={getSampleData()} >
