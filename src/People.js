@@ -179,9 +179,9 @@ function People() {
 
             <div className='tal'>
                 <br/>
+                <div className='tal'><b>Enter data about 1 or more people using the pattern below in 'example data format', then press 'process'.</b></div>
                 <button onClick={addPerson}>process</button>
                 <br/>
-                <div className='tal'><b>Enter data about 1 or more people using the pattern below in 'example data format', then press 'process'.</b></div>
 
                 <br/>
                 <div className='tal'><b>Data to process:</b></div>
