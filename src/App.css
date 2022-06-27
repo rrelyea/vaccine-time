@@ -228,3 +228,22 @@ th {
 .w200 {
   width: 200px;
 }
+
+.w400 {
+  width: 400px;
+}
+
+.h400 {
+  height: 400px;
+}
+
+.tal {
+  text-align: left;
+}
+
+.sampleData {
+  text-align: left;
+  margin-left: 20px;
+  border: 1px solid black;
+  padding: 5px;
+}

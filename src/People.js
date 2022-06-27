@@ -2,80 +2,60 @@ import React, { useState } from 'react';
 
 function People() {
     const [users, setUsers] = useState([
-        {   id: 1, 
-            name: 'F',
-            birthDate: '5/1/1969',
-            doses: [
-                { vaccine: 'Pfizer', date: '4/15/2021' },
-                { vaccine: 'Pfizer', date: '5/15/2021' },
-                { vaccine: 'Pfizer', date: '10/15/2021' },
-                { vaccine: 'Pfizer', date: '6/15/2022' },
-            ]
-        },
-        {   id: 2, 
-            name: 'M',
-            birthDate: '3/1/1971',
-            immunocompromised: 'true',
-            doses: [
-                { vaccine: 'Pfizer', date: '4/15/2021' },
-                { vaccine: 'Pfizer', date: '5/15/2021' },
-                { vaccine: 'Pfizer', date: '10/15/2021' },
-            ]
-        },
-        {   id: 3, 
-            name: 'C1',
-            birthDate: '7/1/1999',
-            doses: [
-                { vaccine: 'Pfizer', date: '4/15/2021' },
-                { vaccine: 'Pfizer', date: '5/15/2021' },
-                { vaccine: 'Pfizer', date: '10/15/2021' },
-            ]
-        },
-        {   id: 4, 
-            name: 'C2',
-            birthDate: '7/1/2002',
-            doses: [
-                { vaccine: 'Pfizer', date: '4/15/2021' },
-                { vaccine: 'Pfizer', date: '5/15/2021' },
-                { vaccine: 'Pfizer', date: '10/15/2021' },
-            ]
-        },
-        {   id: 5, 
-            name: 'Unvaccinated adult',
-            birthDate: '8/1/2000',
-            doses: [
-            ]
-        },
-        {   id: 6, 
-            name: 'Unvaccinated toddler',
-            birthDate: '8/1/2020',
-            doses: [
-            ]
-        },
-        {   id: 7, 
-            name: 'Unvaccinated young child',
-            birthDate: '8/1/2015',
-            doses: [
-            ]
-        },
     ]);
 
     const addUserToEnd = (newUser) => {
         setUsers(state => [...state, newUser])
     }
 
+    
+    function clearPeople() {
+        setUsers([]);
+    }
+
     function addPerson() {
         var personName = document.getElementById('personName');
+
         if (personName.value !== "") {
-            addUserToEnd({id:3, name: personName.value});
-            personName.value = "";
-            personName.focus();
+            var lines = personName.value.split('\n');
+            
+            var newPerson = null;
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line === "") {
+                    if (newPerson != null) {
+                        addUserToEnd(newPerson);
+                        newPerson = null;
+                    }
+                } else {
+                    if (newPerson == null) {
+                        newPerson = {name: line, doses: [], immunocompromised: false};
+                    } else {
+                        if (line[0] >= '0' && line[0] <= '9') {
+                            var ms = Date.parse(line);
+                            var date = new Date(ms);
+                            newPerson.birthDate = date;
+                            console.log(newPerson.birthDate);
+                        } else if (line.toLowerCase() === "immunocompromised" || line.toLowerCase() === "ic") {
+                            newPerson.immunocompromised = true;
+                        } else {
+                            var chunks = line.split(' ');
+                            var dose = { "vaccine": chunks[0], "date": chunks[1] };
+                            newPerson.doses.push(dose);
+                        }
+
+                    }
+                }
+            }
+            if (newPerson != null) {
+                addUserToEnd(newPerson);
+                newPerson = null;
+            }
         }
     }
 
-    function calculateAge(birthDateStr) {
+    function calculateAge(birthDate) {
         var today = new Date();
-        var birthDate = new Date(birthDateStr);
         var age = today.getFullYear() - birthDate.getFullYear();
         var m = today.getMonth() - birthDate.getMonth();
         age = age + m / 12;
@@ -93,7 +73,7 @@ function People() {
 
     function calculateDosesNeeded(user) {
         var age = calculateAge(user.birthDate);
-        var immunocompromised = user.immunocompromised === "true";
+        var immunocompromised = user.immunocompromised;
 
         var dosesNeeded = 0;
         if (age > .5 && age < 5) {
@@ -148,7 +128,7 @@ function People() {
                             <th className='w200'>Doses Received</th>
                             <th>Recommended Doses</th>
                             <th>Doses to Schedule</th>
-                            <th>Next Dose</th>
+                            <th>Next Dose Timing</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,8 +150,28 @@ function People() {
                 </table>
             </div>
             <div>
-                <input type='text' id='personName' />
-                <button onClick={addPerson}>add person</button>
+                <br/>
+                <b>Type in data about 1 or more people using the pattern below, then press 'import':</b><br/>
+
+                <br/>
+                <textarea className='w400 h400' id='personName' />
+                <button onClick={addPerson}>import</button>
+                <button onClick={clearPeople}>clear all people</button>
+
+                <div className='tal'><b>Example data format:</b></div>
+                
+                <div className='sampleData'>
+                    George Washington<br/>
+                    2/22/1732<br/>
+                    Pfizer 2/1/2021<br/>
+                    Pfizer 4/1/2021<br/>
+                    <br/>
+                    Abraham Lincoln<br/>
+                    2/12/1809<br/>
+                    Immunocompromised<br/>
+                    Moderna 2/8/2021<br/>
+                    Moderna 4/8/2021<br/>
+                </div>
             </div>
         </>
     );
