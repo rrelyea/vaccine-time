@@ -134,7 +134,7 @@ function People() {
                     <tbody>
                         {users && users.map(user =>
                             <tr key={user.id}>
-                                <td>{user.name} {showAge(user.birthDate)} {user.immunocompromised === "true" ? ", Immunocompromised" : ""}</td>
+                                <td>{user.name} {showAge(user.birthDate)} {user.immunocompromised ? ", Immunocompromised" : ""}</td>
                                 <td>
                                     {user.doses && user.doses.map((dose,index) => 
                                     <>
@@ -149,15 +149,16 @@ function People() {
                     </tbody>
                 </table>
             </div>
-            <div>
+            <div className='tal'>
                 <br/>
-                <b>Type in data about 1 or more people using the pattern below, then press 'import':</b><br/>
+                <div className='tal'><b>Type in data about 1 or more people using the pattern below, then press 'import':</b></div>
 
                 <br/>
-                <textarea className='w400 h400' id='personName' />
+                <textarea className='w400 h400' id='personName' /><br/>
                 <button onClick={addPerson}>import</button>
                 <button onClick={clearPeople}>clear all people</button>
-
+                <br/>
+                <br/>
                 <div className='tal'><b>Example data format:</b></div>
                 
                 <div className='sampleData'>
