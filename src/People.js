@@ -148,6 +148,12 @@ function People() {
         if ('schedule' in user) {
             var doseCount = user.doses.length;
             var lastDoseDate = new Date(user.doses[doseCount - 1].date);
+            if (doseCount > user.schedule.doses.length) {
+                return "more than recommended by CDC"
+            } else if (doseCount == user.schedule.doses.length) {
+                return "up to date";
+            }   
+
             var interval = user.schedule.doses[doseCount].after;
             return interval + " after " + lastDoseDate.toLocaleDateString('en-US');
         }
