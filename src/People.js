@@ -73,9 +73,9 @@ function People() {
         }
     }
 
-    function calculateAge(birthDate) {
+    function calculateAge(birthDateStr) {
         var today = new Date();
-        var birthDate = new Date(birthDate);
+        var birthDate = new Date(birthDateStr);
         var age = today.getFullYear() - birthDate.getFullYear();
         var m = today.getMonth() - birthDate.getMonth();
         age = age + m / 12;
@@ -94,7 +94,6 @@ function People() {
     function calculateDosesNeeded(user) {
         var age = calculateAge(user.birthDate);
         var immunocompromised = user.immunocompromised === "true";
-        var doseCount = user.doses === undefined ? 0 : user.doses.length;
 
         var dosesNeeded = 0;
         if (age > .5 && age < 5) {

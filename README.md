@@ -1,3 +1,3 @@
-# evusheld search
-Web site showing Evusheld orders, inventory and info
-- https://rrelyea.github.io/evusheld
+# vaccine-time
+Web site showing CDC recommended vaccine schedule
+- https://rrelyea.github.io/vaccine-time

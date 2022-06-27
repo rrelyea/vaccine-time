@@ -1,9 +1,9 @@
 {
-  "short_name": "Evusheld",
-  "name": "Evusheld orders, inventory and info.",
+  "short_name": "Vaccine-Time",
+  "name": "Vaccine-Time",
   "icons": [
   ],
-  "start_url": "/evusheld/",
+  "start_url": "/vaccine-time/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

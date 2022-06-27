@@ -1,8 +1,6 @@
 import React from 'react';
 import BreadCrumbBar from './BreadCrumbBar.js';
 import People from './People.js';
-import * as constantsSite from './constants-site.js';
-import * as constantsBranch from './constants-branch.js';
 import './App.css';
 
 
