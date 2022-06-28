@@ -20,10 +20,11 @@ function People() {
         importData.value = sampleData.value;
     }
 
-    function addPerson() {
+    function processVaccineRecords() {
         var importData = document.getElementById('importData');
 
-        if (importData.value !== "") {
+        if (importData.value.trim() !== "") {
+            clearPeople();
             var lines = importData.value.split('\n');
             
             var newPerson = null;
@@ -59,6 +60,8 @@ function People() {
                 findAppropriateSchedule(newPerson);
                 newPerson = null;
             }
+        } else {
+            clearPeople();
         }
     }
 
@@ -167,6 +170,19 @@ function People() {
 
     return (
         <>
+            <div className='tal'>
+                <div className='tal'><b>Modify Vaccine Record for you and your loved ones, then press 'process':</b><br/>
+                (or press process to process Washington/Lincoln's vaccine record) </div>
+                <textarea className='w400 h200' id='importData' defaultValue={getSampleData()} /><br/>
+                <div>(you may find it convenient to save this vaccine record in an email or local file, to avoid having to regather/retype the info)</div>
+                <br/>
+                <button onClick={processVaccineRecords}>process</button>
+                <br/>
+                <br/>
+
+
+
+            </div>
             <div className="container">
                 <table className="table table-striped table-bordered">
                     <thead>
@@ -194,29 +210,9 @@ function People() {
                                 <td>{showNextDoseTiming(user)}</td>
                             </tr>
                         )}
+                        {users.length === 0 ? "no people yet" : false }
                     </tbody>
                 </table>
-            </div>
-            { users.length > 0 ?
-            <button onClick={clearPeople}>clear all people</button> :
-            false }
-
-            <div className='tal'>
-                <br/>
-                <div className='tal'><b>Enter data about 1 or more people using the pattern below in 'example data format', then press 'process'.</b></div>
-                <button onClick={addPerson}>process</button>
-                <br/>
-
-                <br/>
-                <div className='tal'><b>Data to process:</b></div>
-                <textarea className='w400 h400' id='importData' /><br/>
-                <br/>
-                <br/>
-                <button onClick={copySampleData}>copy example data to "data to process" box</button>
-                <div className='tal'><b>Example data format:</b></div>
-                
-                <textarea className='sampleData w400 h400' id='sampleData' defaultValue={getSampleData()} >
-                </textarea>
             </div>
         </>
     );
