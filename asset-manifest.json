@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/vaccine-time/static/css/main.c93b1c1d.css",
-    "main.js": "/vaccine-time/static/js/main.caef20c7.js",
+    "main.css": "/vaccine-time/static/css/main.5b566629.css",
+    "main.js": "/vaccine-time/static/js/main.d7d260d5.js",
     "index.html": "/vaccine-time/index.html",
-    "main.c93b1c1d.css.map": "/vaccine-time/static/css/main.c93b1c1d.css.map",
-    "main.caef20c7.js.map": "/vaccine-time/static/js/main.caef20c7.js.map"
+    "main.5b566629.css.map": "/vaccine-time/static/css/main.5b566629.css.map",
+    "main.d7d260d5.js.map": "/vaccine-time/static/js/main.d7d260d5.js.map"
   },
   "entrypoints": [
-    "static/css/main.c93b1c1d.css",
-    "static/js/main.caef20c7.js"
+    "static/css/main.5b566629.css",
+    "static/js/main.d7d260d5.js"
   ]
 }
