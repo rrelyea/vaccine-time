@@ -330,7 +330,9 @@ function People() {
                         <div className='lm30'>
                         {
                             user.schedule != null ?
-                            <span className='highlight'>Schedule dose {user.doses.length + 1} for: {showNextDoseTiming(user)}</span>
+                            (user.doses.length >= user.schedule.doses.length ?
+                                <span className='goodHighlight'>Up to date: no action needed</span>
+                                : <span className='highlight'>Schedule dose {user.doses.length + 1} for: {showNextDoseTiming(user)}</span>)
                             : <span className='highlight'>Choose vaccine type and schedule 1st dose.</span>
                         }
                         </div>

@@ -76,6 +76,10 @@ a:active {
 .highlight {
   background-color: yellow;
 }
+
+.goodHighlight {
+  background-color: lightgreen;
+}
 .lm10 {
   margin-Left: 10px;
 }
