@@ -73,11 +73,18 @@ a:active {
   font-weight: bold;
   margin-Top: 10px;
 }
-
+.highlight {
+  background-color: yellow;
+}
 .lm10 {
   margin-Left: 10px;
 }
-
+.lm30 {
+  margin-Left: 30px;
+}
+.lm60 {
+  margin-Left: 60px;
+}
 .providerTable {
   margin-Left: 10px;
   margin-Top: 30px;
@@ -239,6 +246,9 @@ th {
 .h200 {
   height: 200px;
 }
+.h250 {
+  height: 250px;
+}
 .tal {
   text-align: left;
 }
@@ -248,4 +258,17 @@ th {
   margin-left: 20px;
   border: 1px solid black;
   padding: 5px;
+}
+
+.nextDose {
+  fill: lightgreen;
+}
+
+.otherDoses {
+  fill: lightblue;
+}
+
+.circleText {
+  fill: black;
+  text-anchor: middle;
 }
